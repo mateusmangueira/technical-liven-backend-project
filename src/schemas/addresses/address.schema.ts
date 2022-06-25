@@ -29,4 +29,4 @@ export class Address {
   user: User;
 }
 
-export const AddressDocument = SchemaFactory.createForClass(Address);
+export const AddressSchema = SchemaFactory.createForClass(Address);
