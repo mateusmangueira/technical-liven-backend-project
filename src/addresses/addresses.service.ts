@@ -16,22 +16,23 @@ export class AddressesService {
   ) { }
 
   async createAddress(createAddressDto: CreateAddressDto) {
-    return 'This action adds a new address';
+    const createdAddress = new this.addressModel(createAddressDto);
+    return await createdAddress.save();
   }
 
-  async findAll() {
-    return `This action returns all addresses`;
+  async findAll(): Promise<Address[]> {
+    return await this.addressModel.find().exec();
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} address`;
+  async findOne(id: string) {
+    return await this.addressModel.findById(id);
   }
 
-  async update(id: number, updateAddressDto: UpdateAddressDto) {
+  async update(id: string, updateAddressDto: UpdateAddressDto) {
     return `This action updates a #${id} address`;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} address`;
+  async remove(id: string) {
+    return await this.addressModel.findByIdAndDelete(id);
   }
 }
