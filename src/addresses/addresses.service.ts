@@ -29,7 +29,7 @@ export class AddressesService {
   }
 
   async update(id: string, updateAddressDto: UpdateAddressDto) {
-    return `This action updates a #${id} address`;
+    return await this.addressModel.findByIdAndUpdate(id, updateAddressDto)
   }
 
   async remove(id: string) {
