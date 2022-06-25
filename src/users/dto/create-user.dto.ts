@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
-import { Address } from 'src/schemas/addresses/address.schema';
+import { Address } from '../../addresses/entities/address.entity';
 
 export class CreateUserDto {
   @IsNotEmpty()

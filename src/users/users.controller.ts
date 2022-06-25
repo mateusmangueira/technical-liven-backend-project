@@ -1,13 +1,10 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
+  Controller, Get, Post, Body, Patch, Param, Delete
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
-import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,8 +24,22 @@ export class UsersController {
   }
 
   @Get()
-  async findAll(): Promise<UserEntity[]> {
-    const users = await this.usersService.findAll();
-    return users.map((user) => new UserEntity(user))
+  async findAll() {
+    return await this.usersService.findAll();
+  }
+
+  @Get(':_id')
+  async findOne(@Param('_id') _id: string) {
+    return await this.usersService.findOne(_id);
+  }
+
+  @Patch(':_id')
+  async update(@Param('_id') _id: string, @Body() updateUserDto: UpdateUserDto) {
+    return await this.usersService.update(_id, updateUserDto);
+  }
+
+  @Delete(':_id')
+  async remove(@Param('_id') _id: string) {
+    return await this.usersService.remove(_id);
   }
 }

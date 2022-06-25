@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { User } from '../users/user.schema';
+import { User } from '../../users/entities/user.entity';
 
 export type AddressDocument = Address & Document;
 
@@ -29,4 +29,4 @@ export class Address {
   user: User;
 }
 
-export const AddressDocument = SchemaFactory.createForClass(Address);
+export const AddressSchema = SchemaFactory.createForClass(Address);
