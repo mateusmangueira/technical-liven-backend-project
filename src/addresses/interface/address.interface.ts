@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { User } from 'src/schemas/users/user.schema';
+import { User } from '../../users/entities/user.entity';
 
 export interface Address extends Document {
   readonly street: string;

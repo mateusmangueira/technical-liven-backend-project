@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import { AddressSchema } from '../schemas/addresses/address.schema';
+import { AddressSchema } from '../addresses/entities/address.entity';
 import constants from './constants/constants';
 
 export const addressesProvider = [
