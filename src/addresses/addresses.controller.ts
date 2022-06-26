@@ -24,7 +24,7 @@ export class AddressesController {
 
   @Patch(':_id')
   async update(@Param('_id') _id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return await this.addressesService.update(_id, updateAddressDto);
+    // return await this.addressesService.update(_id, updateAddressDto);
   }
 
   @Delete(':_id')

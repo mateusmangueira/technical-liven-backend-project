@@ -1,22 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
-import { Address } from '../../addresses/entities/address.entity';
+import { Address } from "@prisma/client";
 
-export type UserDocument = User & Document;
-
-@Schema()
-export class User {
-  @Prop({ required: true })
+export class UserEntity {
+  id: string;
   name: string;
-
-  @Prop({ required: true, unique: true })
   email: string;
-
-  @Prop({ required: true })
   password: string;
+  address?: Address[];
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' }] })
-  address: Address[];
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
 }
-
-export const UserSchema = SchemaFactory.createForClass(User);
