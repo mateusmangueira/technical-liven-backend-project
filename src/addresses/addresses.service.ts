@@ -1,38 +1,84 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 
-import { Address } from './interface/address.interface';
-
-import constants from './constants/constants';
+import { PrismaService } from '../database/prisma.service';
+import { AddressEntity } from './entities/address.entity';
 
 @Injectable()
 export class AddressesService {
   constructor(
-    @Inject(constants().addressProvide)
-    private addressModel: Model<Address>,
+    private prisma: PrismaService,
   ) { }
 
+
   async createAddress(createAddressDto: CreateAddressDto) {
-    const createdAddress = new this.addressModel(createAddressDto);
-    return await createdAddress.save();
+    const address = await this.prisma.address.findUnique({
+      where: {
+        postCode: createAddressDto.postCode
+      }
+    })
+
+    if (address) {
+      throw new BadRequestException("Address already exists, try another post code")
+    }
+    const { id, street, street_number, neighborhood, city, state, country, postCode, userId } = await this.prisma.address.create({
+      data: createAddressDto
+    })
+
+    return new AddressEntity({
+      id,
+      street,
+      street_number,
+      neighborhood,
+      city,
+      state,
+      country,
+      postCode,
+      userId
+    });
   }
 
-  async findAll(): Promise<Address[]> {
-    return await this.addressModel.find().exec();
+  async findAll() {
+    return await this.prisma.address.findMany();
   }
 
   async findOne(id: string) {
-    return await this.addressModel.findById(id);
+    const address = await this.prisma.address.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!address) {
+      throw new BadRequestException('Address not found - error on find one')
+    }
+    return address;
   }
 
   async update(id: string, updateAddressDto: UpdateAddressDto) {
-    return await this.addressModel.findByIdAndUpdate(id, updateAddressDto)
+    return await this.prisma.address.update({
+      where: {
+        id
+      },
+      data: updateAddressDto
+    })
   }
 
   async remove(id: string) {
-    return await this.addressModel.findByIdAndDelete(id);
+    const address = await this.prisma.address.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!address) {
+      throw new BadRequestException("Address not found - error on Delete")
+    }
+    return await this.prisma.address.delete({
+      where: {
+        id
+      }
+    })
   }
 }

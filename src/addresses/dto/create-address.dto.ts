@@ -1,12 +1,11 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { User } from '../../users/entities/user.entity';
 
 export class CreateAddressDto {
   @IsNotEmpty()
   street: string;
 
   @IsOptional()
-  number: string;
+  street_number: string;
 
   @IsNotEmpty()
   neighborhood: string;
@@ -17,11 +16,12 @@ export class CreateAddressDto {
   @IsNotEmpty()
   state: string;
 
+  country: string;
+
   @IsNotEmpty()
   postCode: string;
 
-  @IsNotEmpty()
-  user: User;
+  userId: string
 
   constructor(partial: Partial<CreateAddressDto>) {
     Object.assign(this, partial);

@@ -4,15 +4,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("MONGO_URL")
-}
-
-model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  email    String    @unique
-  name     String
-  password String
-  address  Address[]
+  url      = env("DATABASE_URL")
 }
 
 model Address {
@@ -26,6 +18,12 @@ model Address {
   postCode      String @unique
   user          User   @relation(fields: [userId], references: [id])
   userId        String @db.ObjectId
+}
 
-  @@map("address")
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  email    String    @unique
+  name     String
+  password String
+  Address  Address[]
 }

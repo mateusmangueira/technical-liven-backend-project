@@ -1,5 +1,5 @@
+import { Address } from '@prisma/client';
 import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
-import { Address } from '../../addresses/entities/address.entity';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -13,7 +13,7 @@ export class CreateUserDto {
   password: string;
 
   @IsOptional()
-  address: Address;
+  address: Address[];
 
   constructor(partial: Partial<CreateUserDto>) {
     Object.assign(this, partial);

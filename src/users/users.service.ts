@@ -1,19 +1,17 @@
-import { Model } from 'mongoose';
 import { genSalt, hash } from 'bcryptjs';
 
-import { Injectable, Inject } from '@nestjs/common';
-import { User } from './interfaces/user.interface';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-import constants from './constants/constants';
+import { PrismaService } from 'src/database/prisma.service';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
   private salt: string;
   constructor(
-    @Inject(constants().userProvide)
-    private userModel: Model<User>,
+    private prisma: PrismaService,
   ) {
     this.initializeSalt();
   }
@@ -26,23 +24,55 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto) {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: createUserDto.email
+      }
+    });
+
+    if (user) {
+      throw new BadRequestException('User already exists, try Login or another Email to register');
+    }
+    const { id, name, email } = await this.prisma.user.create({
+      data: {
+        ...createUserDto,
+        password: await hash(createUserDto.password, this.salt),
+      }
+    })
+
+    return new UserEntity({
+      id,
+      name,
+      email,
+    });
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userModel.find().exec();
+  async findAll() {
+    return await this.prisma.user.findMany();
   }
 
   async findOne(id: string) {
-    return await this.userModel.findById(id);
+    return await this.prisma.user.findUnique({
+      where: {
+        id
+      }
+    })
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.userModel.findByIdAndUpdate(id, updateUserDto)
+    return await this.prisma.user.update({
+      where: {
+        id
+      },
+      data: updateUserDto
+    })
   }
 
   async remove(id: string) {
-    return await this.userModel.findByIdAndDelete(id);
+    return await this.prisma.user.delete({
+      where: {
+        id
+      }
+    })
   }
 }

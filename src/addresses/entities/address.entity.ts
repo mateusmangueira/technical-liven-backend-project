@@ -1,32 +1,15 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
-import { User } from '../../users/entities/user.entity';
+export class AddressEntity {
+  id: string
+  street: string
+  street_number: string
+  neighborhood: string
+  city: string
+  state: string
+  country: string
+  postCode: string
+  userId: string
 
-export type AddressDocument = Address & Document;
-
-@Schema()
-export class Address {
-
-  @Prop({ required: true })
-  street: string;
-
-  @Prop()
-  number: number;
-
-  @Prop({ required: true })
-  neighborhood: string;
-
-  @Prop({ required: true })
-  city: string;
-
-  @Prop({ required: true })
-  state: string;
-
-  @Prop({ required: true })
-  postCode: string;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: User;
+  constructor(partial: Partial<AddressEntity>) {
+    Object.assign(this, partial);
+  }
 }
-
-export const AddressSchema = SchemaFactory.createForClass(Address);
