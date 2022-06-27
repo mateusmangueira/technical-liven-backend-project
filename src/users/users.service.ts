@@ -1,12 +1,10 @@
-import { Model } from 'mongoose';
 import { genSalt, hash } from 'bcryptjs';
 
-import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 import { PrismaService } from 'src/database/prisma.service';
-import constants from './constants/constants';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
