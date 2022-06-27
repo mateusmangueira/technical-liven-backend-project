@@ -8,8 +8,11 @@ import { AddressesModule } from './addresses/addresses.module';
 import { PrismaModule } from './database/prisma.module';
 import { AuthModule } from './auth/auth.module';
 
+import jwtConstants from './auth/constants';
+
 @Module({
   imports: [ConfigModule.forRoot({
+    load: [jwtConstants],
     isGlobal: true
   }
   ), MongooseModule.forRoot(process.env.DATABASE_URL), UsersModule, AddressesModule, PrismaModule, AuthModule],
