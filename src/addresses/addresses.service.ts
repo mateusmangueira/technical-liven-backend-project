@@ -39,8 +39,22 @@ export class AddressesService {
     });
   }
 
-  async findAll() {
-    return await this.prisma.address.findMany();
+  async findAll(addressesFilters: CreateAddressDto) {
+    const { street, street_number, neighborhood, city, country, postCode, state } = addressesFilters;
+    return await this.prisma.address.findMany({
+      where: {
+        street,
+        street_number,
+        neighborhood,
+        city,
+        country,
+        postCode,
+        state
+      },
+      include: {
+        user: true
+      }
+    });
   }
 
   async findOne(id: string) {

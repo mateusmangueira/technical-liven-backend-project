@@ -47,8 +47,17 @@ export class UsersService {
     });
   }
 
-  async findAll() {
-    return await this.prisma.user.findMany();
+  async findAll(usersFilter: CreateUserDto) {
+    const { name, email } = usersFilter
+    return await this.prisma.user.findMany({
+      where: {
+        name,
+        email,
+      },
+      include: {
+        Address: true
+      }
+    });
   }
 
   async findOne(id: string) {

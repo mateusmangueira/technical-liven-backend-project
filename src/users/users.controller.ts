@@ -1,5 +1,5 @@
 import {
-  Controller, Get, Post, Body, Patch, Param, Delete
+  Controller, Get, Post, Body, Patch, Param, Delete, Query
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -24,8 +24,8 @@ export class UsersController {
   }
 
   @Get()
-  async findAll() {
-    return await this.usersService.findAll();
+  async findAll(@Query() usersFilter: CreateUserDto) {
+    return await this.usersService.findAll(usersFilter);
   }
 
   @Get(':_id')
