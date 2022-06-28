@@ -33,20 +33,33 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':_id')
-  async findOne(@Param('_id') _id: string) {
-    return await this.usersService.findOne(_id);
+  @Get(':id')
+  async findOne(@Param('id') _id: number) {
+    const { id, name, email } = await this.usersService.findOne(+_id)
+    return {
+      id,
+      name,
+      email
+    }
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':_id')
-  async update(@Param('_id') _id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(_id, updateUserDto);
+  @Patch(':id')
+  async update(@Param('id') _id: number, @Body() updateUserDto: UpdateUserDto) {
+    const { id, name, email } = await this.usersService.update(+_id, updateUserDto);
+    return {
+      id,
+      name,
+      email
+    }
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':_id')
-  async remove(@Param('_id') _id: string) {
-    return await this.usersService.remove(_id);
+  @Delete(':id')
+  async remove(@Param('id') _id: number) {
+    const { id, name, email } = await this.usersService.remove(+_id);
+    return {
+      id, name, email
+    }
   }
 }

@@ -21,7 +21,7 @@ export class CreateAddressDto {
   @IsNotEmpty()
   postCode: string;
 
-  userId: string
+  userId: number
 
   constructor(partial: Partial<CreateAddressDto>) {
     Object.assign(this, partial);

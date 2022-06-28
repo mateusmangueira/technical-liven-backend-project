@@ -11,32 +11,37 @@ export class AddressesService {
     private prisma: PrismaService,
   ) { }
 
-
   async createAddress(createAddressDto: CreateAddressDto) {
-    const address = await this.prisma.address.findUnique({
-      where: {
-        postCode: createAddressDto.postCode
+    try {
+      const address = await this.prisma.address.findUnique({
+        where: {
+          postCode: createAddressDto.postCode
+        }
+      })
+
+      if (address) {
+        throw new BadRequestException("Address already exists, try another post code")
       }
-    })
+      const { id, street, street_number, neighborhood, city, state, country, postCode, userId } = await this.prisma.address.create({
+        data: createAddressDto
+      })
 
-    if (address) {
-      throw new BadRequestException("Address already exists, try another post code")
+      return new AddressEntity({
+        id,
+        street,
+        street_number,
+        neighborhood,
+        city,
+        state,
+        country,
+        postCode,
+        userId
+      });
+
+    } catch (error) {
+      throw new BadRequestException(error);
     }
-    const { id, street, street_number, neighborhood, city, state, country, postCode, userId } = await this.prisma.address.create({
-      data: createAddressDto
-    })
 
-    return new AddressEntity({
-      id,
-      street,
-      street_number,
-      neighborhood,
-      city,
-      state,
-      country,
-      postCode,
-      userId
-    });
   }
 
   async findAll(addressesFilters: CreateAddressDto) {
@@ -57,7 +62,7 @@ export class AddressesService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     const address = await this.prisma.address.findUnique({
       where: {
         id
@@ -70,7 +75,7 @@ export class AddressesService {
     return address;
   }
 
-  async update(id: string, updateAddressDto: UpdateAddressDto) {
+  async update(id: number, updateAddressDto: UpdateAddressDto) {
     return await this.prisma.address.update({
       where: {
         id
@@ -79,7 +84,7 @@ export class AddressesService {
     })
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     const address = await this.prisma.address.findUnique({
       where: {
         id
