@@ -21,20 +21,20 @@ export class AddressesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':_id')
-  async findOne(@Param('_id') _id: string) {
-    return await this.addressesService.findOne(_id);
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return await this.addressesService.findOne(+id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':_id')
-  async update(@Param('_id') _id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return await this.addressesService.update(_id, updateAddressDto);
+  @Patch(':id')
+  async update(@Param('id') id: number, @Body() updateAddressDto: UpdateAddressDto) {
+    return await this.addressesService.update(+id, updateAddressDto);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':_id')
-  async remove(@Param('_id') _id: string) {
-    return await this.addressesService.remove(_id);
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    return await this.addressesService.remove(+id);
   }
 }

@@ -1,5 +1,5 @@
 export class AddressEntity {
-  id: string
+  id: number
   street: string
   street_number: string
   neighborhood: string
@@ -7,7 +7,7 @@ export class AddressEntity {
   state: string
   country: string
   postCode: string
-  userId: string
+  userId: number
 
   constructor(partial: Partial<AddressEntity>) {
     Object.assign(this, partial);
