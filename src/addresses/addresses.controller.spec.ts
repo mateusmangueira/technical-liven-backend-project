@@ -27,11 +27,10 @@ describe('AddressesController', () => {
       neighborhood: "Bairro Teste",
       city: 'Cidade Teste',
       state: 'Estado Teste',
-      country: 'Pais Test',
+      country: 'Pais Teste',
       postCode: "111111",
     }
     const user = await controller.createAddress(addressData);
-    console.log(user);
     expect(user).toHaveProperty("id");
   });
 });
