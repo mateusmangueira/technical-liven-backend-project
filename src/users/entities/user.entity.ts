@@ -1,11 +1,10 @@
-import { Address } from "@prisma/client";
+import { AddressEntity } from "src/addresses/entities/address.entity";
 
 export class UserEntity {
   id: number;
   name: string;
   email: string;
-  password: string;
-  address?: Address[];
+  address?: AddressEntity[];
 
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);

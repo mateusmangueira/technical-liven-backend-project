@@ -4,7 +4,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from '../database/prisma.service';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class UsersService {
         email: createUserDto.email
       },
       include: {
-        Address: true,
+        address: true,
       }
     })
 
@@ -37,13 +37,13 @@ export class UsersService {
       throw new BadRequestException('User already exists, try Login or another Email to register');
     }
 
-    const { id, name, email, Address } = await this.prisma.user.create({
+    const { id, name, email } = await this.prisma.user.create({
       data: {
         ...createUserDto,
         password: await hash(createUserDto.password, this.salt),
       },
       include: {
-        Address: true,
+        address: true,
       }
     })
 
@@ -51,7 +51,6 @@ export class UsersService {
       id,
       name,
       email,
-      address: Address,
     });
   }
 
@@ -63,11 +62,11 @@ export class UsersService {
         email,
       },
       include: {
-        Address: true
+        address: true
       },
     });
 
-    return users.map(({ id, name, email, Address }) => new UserEntity({ id, email, name, address: Address }));
+    return users
   }
 
   async findOne(_id: number) {
