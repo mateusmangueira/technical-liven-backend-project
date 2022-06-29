@@ -45,7 +45,7 @@ export class AddressesService {
 
   }
 
-  async findAll(addressesFilters: CreateAddressDto) {
+  async findAllFilters(addressesFilters: CreateAddressDto) {
     const { street, street_number, neighborhood, city, country, postCode, state } = addressesFilters;
     return await this.prisma.address.findMany({
       where: {
@@ -57,6 +57,14 @@ export class AddressesService {
         postCode,
         state
       },
+      include: {
+        user: true,
+      }
+    });
+  }
+
+  async findAll() {
+    return await this.prisma.address.findMany({
       include: {
         user: true,
       }
@@ -75,7 +83,6 @@ export class AddressesService {
     }
     return address;
   }
-
 
   async update(id: number, updateAddressDto: UpdateAddressDto) {
     try {

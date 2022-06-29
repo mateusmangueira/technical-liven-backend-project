@@ -28,8 +28,14 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll(@Query() usersFilter: CreateUserDto) {
-    return await this.usersService.findAll(usersFilter);
+  async findAllFilters(@Query() usersFilter: CreateUserDto) {
+    return await this.usersService.findAllFilters(usersFilter);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  async findAll() {
+    return await this.usersService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)

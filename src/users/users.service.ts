@@ -54,7 +54,7 @@ export class UsersService {
     });
   }
 
-  async findAll(usersFilter: CreateUserDto) {
+  async findAllFilters(usersFilter: CreateUserDto) {
     const { name, email } = usersFilter
     const users = await this.prisma.user.findMany({
       where: {
@@ -65,7 +65,15 @@ export class UsersService {
         address: true
       },
     });
+    return users
+  }
 
+  async findAll() {
+    const users = await this.prisma.user.findMany({
+      include: {
+        address: true
+      },
+    });
     return users
   }
 

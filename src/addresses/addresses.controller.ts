@@ -16,8 +16,14 @@ export class AddressesController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll(@Query() addressesFilters: CreateAddressDto) {
-    return await this.addressesService.findAll(addressesFilters);
+  async findAllFilters(@Query() addressesFilters: CreateAddressDto) {
+    return await this.addressesService.findAllFilters(addressesFilters);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  async findAll() {
+    return await this.addressesService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
