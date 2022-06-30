@@ -43,4 +43,10 @@ export class AddressesController {
   async remove(@Param('id') id: number) {
     return await this.addressesService.remove(+id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  async removeAll() {
+    return await this.addressesService.removeAll();
+  }
 }
