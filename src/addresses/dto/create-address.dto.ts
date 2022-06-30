@@ -16,12 +16,14 @@ export class CreateAddressDto {
   @IsNotEmpty()
   state: string;
 
+  @IsNotEmpty()
   country: string;
 
   @IsNotEmpty()
   postCode: string;
 
-  userId: number
+  @IsOptional()
+  userId?: number;
 
   constructor(partial: Partial<CreateAddressDto>) {
     Object.assign(this, partial);

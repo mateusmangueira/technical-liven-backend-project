@@ -13,7 +13,7 @@ export class CreateUserDto {
   password: string;
 
   @IsOptional()
-  address: Address[];
+  address?: Address[];
 
   constructor(partial: Partial<CreateUserDto>) {
     Object.assign(this, partial);

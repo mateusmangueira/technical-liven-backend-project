@@ -24,6 +24,7 @@ export class AddressesService {
       }
       const { id, street, street_number, neighborhood, city, state, country, postCode, userId } = await this.prisma.address.create({
         data: createAddressDto
+
       })
 
       return new AddressEntity({
@@ -35,7 +36,7 @@ export class AddressesService {
         state,
         country,
         postCode,
-        userId
+        userId,
       });
 
     } catch (error) {
@@ -44,7 +45,7 @@ export class AddressesService {
 
   }
 
-  async findAll(addressesFilters: CreateAddressDto) {
+  async findAllFilters(addressesFilters: CreateAddressDto) {
     const { street, street_number, neighborhood, city, country, postCode, state } = addressesFilters;
     return await this.prisma.address.findMany({
       where: {
@@ -57,7 +58,15 @@ export class AddressesService {
         state
       },
       include: {
-        user: true
+        user: true,
+      }
+    });
+  }
+
+  async findAll() {
+    return await this.prisma.address.findMany({
+      include: {
+        user: true,
       }
     });
   }
@@ -76,12 +85,16 @@ export class AddressesService {
   }
 
   async update(id: number, updateAddressDto: UpdateAddressDto) {
-    return await this.prisma.address.update({
-      where: {
-        id
-      },
-      data: updateAddressDto
-    })
+    try {
+      return await this.prisma.address.update({
+        where: {
+          id
+        },
+        data: updateAddressDto
+      })
+    } catch (error) {
+      throw new BadRequestException(error)
+    }
   }
 
   async remove(id: number) {
