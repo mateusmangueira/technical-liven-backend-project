@@ -79,6 +79,22 @@ describe('User Test Case', () => {
     expect(foundUser.id).toEqual(user.id);
   });
 
+  it('should not be able to get a specific User by wrong ID', async () => {
+    const userData: CreateUserDto = {
+      name: 'Mateus Test',
+      email: 'mateus-teste-specific@gmail.com',
+      password: '1233215601',
+    }
+    const user = await controller.createUser(userData);
+    expect(user).toHaveProperty("id");
+    try {
+      await controller.findOne((user.id + 1));
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+      expect(error.message).toEqual('User was not found, wrong id');
+    }
+  });
+
   it('should be able to update a specific User by ID', async () => {
     const userData: CreateUserDto = {
       name: 'Mateus Test Update',
@@ -97,6 +113,28 @@ describe('User Test Case', () => {
     expect({ name, email }).toEqual(userUpdateData)
   });
 
+  it('should not be able to update a specific User by wrong ID', async () => {
+    const userData: CreateUserDto = {
+      name: 'Mateus Test Update',
+      email: 'mateus-test-update@gmail.com',
+      password: '1233215601',
+    }
+    const user = await controller.createUser(userData);
+    expect(user).toHaveProperty("id");
+
+    const userUpdateData: UpdateUserDto = {
+      name: 'Mateus Updated Name',
+      email: 'mateus-updated-email@gmail.com',
+    }
+
+    try {
+      await controller.update(user.id + 1, userUpdateData);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+      expect(error.message).toEqual('User was not found, invalid update user');
+    }
+  });
+
   it('should be able to delete a specific User by ID', async () => {
     const userData: CreateUserDto = {
       name: 'Mateus Test Delete',
@@ -108,6 +146,23 @@ describe('User Test Case', () => {
 
     const { id, name, email } = await controller.remove(user.id);
     expect({ id, name, email }).toEqual(user)
+  });
+
+  it('should not be able to delete a specific User by wrong ID', async () => {
+    const userData: CreateUserDto = {
+      name: 'Mateus Test Delete',
+      email: 'mateus-test-delete@gmail.com',
+      password: '1233215601',
+    }
+    const user = await controller.createUser(userData);
+    expect(user).toHaveProperty("id");
+
+    try {
+      await controller.remove(user.id + 1);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+      expect(error.message).toEqual('User was not found, invalid delete user');
+    }
   });
 
   it('should be able to delete all Users', async () => {
