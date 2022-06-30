@@ -116,4 +116,12 @@ export class UsersService {
     }
 
   }
+
+  async removeAll() {
+    try {
+      return await this.prisma.user.deleteMany();
+    } catch (error) {
+      throw new BadRequestException(error)
+    }
+  }
 }

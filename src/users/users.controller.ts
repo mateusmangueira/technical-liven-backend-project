@@ -68,4 +68,10 @@ export class UsersController {
       id, name, email
     }
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  async removeAll() {
+    return await this.usersService.removeAll();
+  }
 }

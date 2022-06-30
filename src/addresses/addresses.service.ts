@@ -113,4 +113,12 @@ export class AddressesService {
       }
     })
   }
+
+  async removeAll() {
+    try {
+      return await this.prisma.address.deleteMany();
+    } catch (error) {
+      throw new BadRequestException(error)
+    }
+  }
 }
