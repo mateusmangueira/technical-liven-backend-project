@@ -93,7 +93,7 @@ export class AddressesService {
         data: updateAddressDto
       })
     } catch (error) {
-      throw new BadRequestException(error)
+      throw new BadRequestException('Address was not found, invalid update address');
     }
   }
 

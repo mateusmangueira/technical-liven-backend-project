@@ -79,40 +79,47 @@ export class UsersService {
 
   async findOne(_id: number) {
     try {
-      return await this.prisma.user.findUnique({
+      const { id, name, email } = await this.prisma.user.findUnique({
         where: {
           id: _id
         }
       })
+
+      return { id, name, email }
+
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException('User was not found, wrong id');
     }
 
   }
 
   async update(_id: number, updateUserDto: UpdateUserDto) {
     try {
-      return await this.prisma.user.update({
+      const { id, name, email } = await this.prisma.user.update({
         where: {
           id: _id
         },
         data: updateUserDto
       })
+      return { id, name, email };
+
     } catch (error) {
-      throw new BadRequestException(error)
+      throw new BadRequestException('User was not found, invalid update user')
     }
 
   }
 
   async remove(_id: number) {
     try {
-      return await this.prisma.user.delete({
+      const { id, name, email } = await this.prisma.user.delete({
         where: {
           id: _id
         }
       })
+
+      return { id, name, email }
     } catch (error) {
-      throw new BadRequestException(error)
+      throw new BadRequestException('User was not found, invalid delete user')
     }
 
   }
