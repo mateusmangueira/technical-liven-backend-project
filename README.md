@@ -29,7 +29,7 @@
 
 ## Condições de Pré-Utilização do backend
 
-É necessário ter um servidor MySQL instalado localmente, ou alguma representação MySQL: MariaDB por exemplo, no momento da utilização dessa API, com uma banco de dados chamado 'mydb' criado e 2 tabelas criadas: User e Address.
+É necessário ter um servidor MySQL instalado localmente, ou alguma representação MySQL: MariaDB por exemplo, no momento da utilização dessa API, com uma banco de dados chamado 'mydb' criado.
 
 No Linux o serviço do MySQL precisa está ativo, seguir o passo a passo:
 
