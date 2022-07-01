@@ -91,5 +91,5 @@ $ yarn test:cov
 
 A documentação encontra-se na rota /api
 
-Exemplo: http://localhost:300/api
+Exemplo: http://localhost:3000/api
 
