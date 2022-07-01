@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -15,7 +14,7 @@ import jwtConstants from './auth/constants';
     load: [jwtConstants],
     isGlobal: true
   }
-  ), MongooseModule.forRoot(process.env.DATABASE_URL), UsersModule, AddressesModule, PrismaModule, AuthModule],
+  ), UsersModule, AddressesModule, PrismaModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

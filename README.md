@@ -26,48 +26,70 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+
+## Condições de Pré-Utilização do backend
+
+É necessário ter um servidor MySQL instalado localmente, ou alguma representação MySQL: MariaDB por exemplo, no momento da utilização dessa API, com uma banco de dados chamado 'mydb' criado e 2 tabelas criadas: User e Address.
+
+No Linux o serviço do MySQL precisa está ativo, seguir o passo a passo:
+
+```bash
+# Iniciando o servidor MySQL
+$ service mysqld start
+
+ou
+
+# Iniciando o MariaDB
+$ service mariadb start
+```
+
+```bash
+# Acessando o MySQL pelo terminal
+$ mysql -u root -p
+
+# Criando o banco de dados mydb
+MariaDB [(none)]> create database 'mydb';
+
+```
+
+Após esse passo-a-passo inicial, pode seguir para utilização da API
+
 ## Installation
 
 ```bash
-$ npm install
+$ yarn install
 ```
 
 ## Running the app
 
 ```bash
+# Prisma connection with DB
+$ yarn prisma db push
+
+```
+
+```bash
 # development
-$ npm run start
+$ yarn start
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+$ yarn test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn test:cov
 ```
 
-## Support
+## Swagger Documentation
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+A documentação encontra-se na rota /api
 
-## Stay in touch
+Exemplo: http://localhost:300/api
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
