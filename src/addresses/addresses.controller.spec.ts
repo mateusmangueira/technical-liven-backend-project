@@ -24,7 +24,6 @@ describe('Address Test Case', () => {
     controller.removeAll();
   })
 
-
   it("Address Controller, Address Service and Prisma Service should be defined", () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
@@ -79,6 +78,26 @@ describe('Address Test Case', () => {
     expect(foundAddress.id).toEqual(address.id);
   });
 
+  it('should not be able to get a specific Address by wrong ID', async () => {
+    const addressData: CreateAddressDto = {
+      street: 'Rua Teste Wrong ID',
+      street_number: '100',
+      neighborhood: "Bairro Teste  Wrong ID",
+      city: 'Cidade Teste  Wrong ID',
+      state: 'Estado Teste  Wrong ID',
+      country: 'Pais Teste  Wrong ID',
+      postCode: "555555",
+    }
+    const address = await controller.createAddress(addressData);
+    expect(address).toHaveProperty("id");
+    try {
+      await controller.findOne((address.id + 1));
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+      expect(error.message).toEqual('Address not found - error on find one');
+    }
+  });
+
   it('should be able to update a specific Address by ID', async () => {
     const addressData: CreateAddressDto = {
       street: 'Rua Teste',
@@ -105,6 +124,37 @@ describe('Address Test Case', () => {
     expect({ street, street_number, neighborhood, city, state, country, postCode }).toEqual(addressUpdateData)
   });
 
+  it('should not be able to update a specific Address by wrong ID', async () => {
+    const addressData: CreateAddressDto = {
+      street: 'Rua Teste Wrong Update',
+      street_number: '100',
+      neighborhood: "Bairro Teste Wrong Update",
+      city: 'Cidade Teste Wrong Update',
+      state: 'Estado Teste Wrong Update',
+      country: 'Pais Test Wrong Update',
+      postCode: "666666",
+    }
+    const address = await controller.createAddress(addressData);
+    expect(address).toHaveProperty("id");
+
+    const addressUpdateData: UpdateAddressDto = {
+      street: 'Rua Teste Update',
+      street_number: '101',
+      neighborhood: "Bairro Teste Update",
+      city: 'Cidade Teste Update',
+      state: 'Estado Teste Update',
+      country: 'Pais Teste Update',
+      postCode: "222222",
+    }
+
+    try {
+      await controller.update(address.id + 1, addressUpdateData);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+      expect(error.message).toEqual('Address was not found, invalid update address');
+    }
+  });
+
   it('should be able to delete a specific Address by ID', async () => {
     const addressData: CreateAddressDto = {
       street: 'Rua Teste Delete',
@@ -121,6 +171,27 @@ describe('Address Test Case', () => {
     const { id, street, street_number, neighborhood, city, state, country, postCode, userId } = await controller.remove(address.id);
     expect({ id, street, street_number, neighborhood, city, state, country, postCode, userId }).toEqual(address)
 
+  });
+
+  it('should be able to delete a specific Address by ID', async () => {
+    const addressData: CreateAddressDto = {
+      street: 'Rua Teste Delete',
+      street_number: '100',
+      neighborhood: "Bairro Teste Delete",
+      city: 'Cidade Teste Delete',
+      state: 'Estado Teste Delete',
+      country: 'Pais Teste Delete',
+      postCode: "1111111111",
+    }
+    const address = await controller.createAddress(addressData);
+    expect(address).toHaveProperty("id");
+
+    try {
+      await controller.remove(address.id + 1);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+      expect(error.message).toEqual('Address not found - error on Delete');
+    }
   });
 
   it('should be able to delete all Addresses', async () => {
